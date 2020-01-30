@@ -1,0 +1,7 @@
+nb-configuration.xml
+target/
+/280120-2/nbproject/
+*iml
+.idea/
+lib/
+other/
