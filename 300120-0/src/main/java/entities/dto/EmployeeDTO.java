@@ -9,6 +9,11 @@ public class EmployeeDTO {
 
     public EmployeeDTO() {}
 
+    public EmployeeDTO(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
     public EmployeeDTO(Employee employee) {
         this.id = employee.getId();
         this.name = employee.getName();

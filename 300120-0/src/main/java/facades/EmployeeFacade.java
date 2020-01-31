@@ -18,7 +18,6 @@ public class EmployeeFacade {
     
     //Private Constructor to ensure Singleton
     private EmployeeFacade() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("pu");
     }
     /**
      * Gets the single instance of the Facade
@@ -27,8 +26,8 @@ public class EmployeeFacade {
     public static EmployeeFacade getInstance(EntityManagerFactory emf) {
         if (instance == null) {
             instance = new EmployeeFacade();
+            entityManagerFactory = emf;
         }
-        emf = entityManagerFactory;
         return instance;
     }
 
@@ -111,7 +110,7 @@ public class EmployeeFacade {
      * Persists a object of type Employee.
      * @param employee The employee to be persisted.
      */
-    public void createEmployee(Employee employee) {
+    public Employee createEmployee(Employee employee) {
         EntityManager entityManager = getEntityManager();
         try {
             entityManager.getTransaction().begin();
@@ -123,6 +122,7 @@ public class EmployeeFacade {
         } finally {
             entityManager.close();
         }
+        return employee;
     }
 
     private List<EmployeeDTO> convertToDTOList(List<Employee> employees) {
