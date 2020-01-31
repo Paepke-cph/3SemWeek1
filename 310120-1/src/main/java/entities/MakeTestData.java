@@ -16,6 +16,7 @@ public class MakeTestData {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(bc1);
+        entityManager.persist(bc2);
         entityManager.getTransaction().commit();
         entityManager.close();
         entityManagerFactory.close();

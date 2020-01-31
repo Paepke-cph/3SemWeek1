@@ -2,6 +2,8 @@ package facades;
 
 import entities.Employee;
 import entities.dto.EmployeeDTO;
+import javafx.css.CssParser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import javax.persistence.EntityManager;
@@ -11,11 +13,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeFacadeTest {
-    private EmployeeFacade employeeFacade;
+    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("pu");
+    private static EmployeeFacade employeeFacade = EmployeeFacade.getInstance(entityManagerFactory);
 
     @BeforeEach
     public void setUpClass() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("pu");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         // We are doing this over two transaction to make sure Peter is the first to be placed in the database.
@@ -28,7 +30,15 @@ public class EmployeeFacadeTest {
         entityManager.persist(new Employee("Kasper","Copenhagen",1004));
         entityManager.getTransaction().commit();
         entityManager.close();
-        employeeFacade = EmployeeFacade.getInstance(entityManagerFactory);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.createNativeQuery("TRUNCATE TABLE Employee").executeUpdate();
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Test
