@@ -1,5 +1,6 @@
 package rest.service;
 
+import com.google.gson.Gson;
 import entities.BankCustomer;
 import entities.dto.BankCustomerDTO;
 import facades.BankCustomerFacade;
@@ -44,8 +45,10 @@ public class BankCustomerResource {
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(BankCustomer entity) {
-        throw new UnsupportedOperationException();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(String entity) {
+        BankCustomer bc = facade.addCustomer(new Gson().fromJson(entity,BankCustomer.class));
+        return Response.ok(new BankCustomerDTO(bc)).build();
     }
     
     @PUT
